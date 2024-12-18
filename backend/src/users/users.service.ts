@@ -20,4 +20,10 @@ export class UsersService {
           await createdUser.save()
           return createdUser
     }
+
+    async findUserById(userId:string) : Promise<UserDocument | null>{
+        console.log('err',userId);
+        
+        return this.userModel.findOne({_id:userId}).exec()
+    }
 }
