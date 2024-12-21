@@ -10,7 +10,7 @@ export class AuthController{
 
     constructor(private readonly authService:AuthService){}
 
-    @Post('register')
+    @Post('signup')
     createUser(@Body(ValidationPipe) createUserDto: CreateUserDto ){
          return this.authService.register(createUserDto)
     }

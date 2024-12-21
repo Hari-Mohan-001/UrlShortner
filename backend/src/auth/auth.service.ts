@@ -42,10 +42,10 @@ export class AuthService {
   }
 
   async validate(loginUserDto: LoginUserDto) {
+    
     const user = await this.userService.findUserByEmail(loginUserDto.email);
-
     if (!user) {
-      throw new UnauthorizedException('Invalid email or password');
+      throw new UnauthorizedException('Invalid email or password');  
     }
 
     const isPasswordValid = await this.comparePassword(
@@ -70,6 +70,6 @@ export class AuthService {
   async generateToken(id: string, name: string): Promise<SignInResult> {
     const payLoad = { _id: id, name: name };
     const accessToken = await this.jwtService.signAsync(payLoad);
-    return { _id: id, accessToken, name };   
+    return { _id: id, accessToken, name };
   }
 }
