@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-const Base_Url = 'http://localhost:3000'
+const Base_Url = 'https://urlshortner-hbie.onrender.com'
 
 const axiosInstance = axios.create({
     baseURL:Base_Url,
