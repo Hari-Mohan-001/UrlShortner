@@ -5,7 +5,7 @@ import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     cors: {
-      origin: 'url-shortner-rose-two.vercel.app',
+      origin: 'https://url-shortner-rose-two.vercel.app',
       allowedHeaders: ['Content-Type', 'Authorization'],
       credentials: true,
     },
