@@ -14,7 +14,7 @@ import { useState } from "react";
 import { signUpData } from "@/types";
 import * as yup from "yup";
 import { api } from "@/Api/api";
-import { useNavigate } from "react-router-dom";
+
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Terminal } from "lucide-react";
 
@@ -42,7 +42,7 @@ const Signup = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState<boolean>(false);
   const[signupSucees, setSignupSuccess] =useState<boolean>(false)
-  const navigate = useNavigate();
+  
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -66,9 +66,13 @@ const Signup = () => {
       const userData = { name:formData.name,email: formData.email, password: formData.password };
       const response = await api.signUp(userData);
       if (response.success) {
-        console.log("sign", response.data);
        setSignupSuccess(true)
-       // navigate("/login");
+      setFormData({name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",})
+        console.log('celared');
+        
       } else {
         setErrors({ loginError: response.message || "failed to login" });
       }
@@ -99,17 +103,17 @@ const Signup = () => {
       <CardContent className="space-y-3">
         <div className="space-y-1">
           <CardDescription>Enter the name</CardDescription>
-          <Input name="name" type="text" onChange={handleInputChange} />
+          <Input name="name" type="text" onChange={handleInputChange} value={formData.name} />
           {errors.name && <Error message={errors.name} />}
         </div>
         <div className="space-y-1">
           <CardDescription>Enter the email</CardDescription>
-          <Input name="email" type="email" onChange={handleInputChange} />
+          <Input name="email" type="email" onChange={handleInputChange} value={formData.email}/>
           {errors.email && <Error message={errors.email} />}
         </div>
         <div className="space-y-1">
           <CardDescription>Enter the password</CardDescription>
-          <Input name="password" type="password" onChange={handleInputChange} />
+          <Input name="password" type="password" onChange={handleInputChange} value={formData.password} />
           {errors.password && <Error message={errors.password} />}
         </div>
         <div className="space-y-1">
@@ -118,9 +122,10 @@ const Signup = () => {
             name="confirmPassword"
             type="password"
             onChange={handleInputChange}
+            value={formData.confirmPassword}
           />
           {errors.confirmPassword && <Error message={errors.confirmPassword} />}
-          {errors.matchError && <Error message={errors.matchError} />}
+          {errors.matchError && <Error message={errors.matchError} />}   
         </div>
       </CardContent>
 
@@ -134,8 +139,8 @@ const Signup = () => {
       </CardFooter>
       {signupSucees && <Alert>
   <Terminal className="h-4 w-4" />
-  <AlertTitle>Success</AlertTitle>
-  <AlertDescription>
+  <AlertTitle className="text-green-600">Success</AlertTitle>
+  <AlertDescription className="text-green-900">
     You have successfully registered and now you can login to continue
   </AlertDescription>
 </Alert>

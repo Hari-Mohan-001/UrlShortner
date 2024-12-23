@@ -1,13 +1,14 @@
 // import { from } from "rxjs";
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException} from "@nestjs/common"
 import { JwtService } from "@nestjs/jwt";
-import { Observable } from "rxjs";
+
 
 @Injectable()
 export class AuthGuard implements CanActivate {
     constructor(private jwtService:JwtService){} 
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
+        console.log('auth');
         
         const req = context.switchToHttp().getRequest()
         const authorization = req.headers.authorization

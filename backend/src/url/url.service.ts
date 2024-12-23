@@ -28,8 +28,6 @@ export class UrlService {
     let isUnique = false;
 
     while (!isUnique) {
-      console.log('urlservice');
-
       const { nanoid } = require('nanoid');
 
       const nanoId = nanoid(7);
@@ -45,5 +43,20 @@ export class UrlService {
 
   async getUserUrls(userId: string): Promise<UrlDocument[]> {
     return await this.UrlModel.find({ userId });
+  }
+
+  async clickLink(id: string): Promise<string> {
+    const link = await this.UrlModel.findByIdAndUpdate(id, {
+      $inc: { click: 1 },
+    });
+    console.log(link);
+
+    if (link) {
+      return link.orginalUrl;
+    }
+  }
+
+  async deleteLink(id: string) {
+    await this.UrlModel.findByIdAndDelete(id);
   }
 }

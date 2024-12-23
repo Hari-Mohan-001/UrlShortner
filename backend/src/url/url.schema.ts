@@ -15,6 +15,9 @@ export class Url {
 
     @Prop({type:Types.ObjectId, ref:"User"})
     userId:User
+
+    @Prop({type:Number, default:0})
+    click:number;
 }
 
 export const UrlSchema = SchemaFactory.createForClass(Url)

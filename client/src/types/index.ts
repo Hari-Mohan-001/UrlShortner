@@ -9,3 +9,12 @@ export type signUpData = {
     password:string,
     confirmPassword?:string
 }
+
+export type Link = {
+        shortUrl: string;
+        _id: string;
+        orginalUrl: string;
+        click: 0,
+        createdAt: string;
+        updatedAt: string;
+}

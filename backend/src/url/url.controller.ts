@@ -1,26 +1,51 @@
-import { Body, Controller, Get, Post, Request, UseGuards, ValidationPipe } from "@nestjs/common";
-import { CreateUrlDto } from "./dto/create.url.dto";
-import { UrlService } from "./url.service";
-import { AuthGuard } from "src/auth/guard/auth.guard";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  NotFoundException,
+  Param,
+  Patch,
+  Post,
+  Request,
+  UseGuards,
+  ValidationPipe,
+} from '@nestjs/common';
+import { UrlService } from './url.service';
+import { AuthGuard } from 'src/auth/guard/auth.guard';
 
 @UseGuards(AuthGuard)
 @Controller('url')
+export class UrlController {
+  constructor(private urlService: UrlService) {}
 
-export class UrlController{
-    constructor(private urlService:UrlService){} 
+  @Post()
+  createUrl(@Body() { orginalLink }: { orginalLink: string }, @Request() req) {
+    return this.urlService.createUrl({
+      orginalUrl: orginalLink,
+      userId: req.user._id,
+    });
+  }
 
-    @Post()
-      createUrl(@Body(ValidationPipe) urlDto: CreateUrlDto, @Request() req){
-        console.log('postrote');
-        
-          return this.urlService.createUrl({orginalUrl: urlDto.orginalUrl , userId:req.user._id})
-      }
-
-      @Get()
-      async getUrls(@Request() req) {
-        const userId = req.user._id;
-        return this.urlService.getUserUrls(userId);
+  @Patch()
+  async getLink(@Body() { id }: { id: string }) {
+    console.log('pathrote');
+    const orgLink = await this.urlService.clickLink(id);
+    if (orgLink) {
+      return orgLink;
+    } else {
+      throw new NotFoundException('Link Not found');
     }
-    
+  }
 
+  @Get('/')
+  async getLinks(@Request() req) {
+    const userId = req.user._id;
+    return this.urlService.getUserUrls(userId);
+  }
+
+  @Delete('/:id')
+  async deleteLink(@Param('id') id: string) {
+    this.urlService.deleteLink(id);
+  }
 }
